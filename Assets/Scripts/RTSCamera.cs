@@ -121,7 +121,10 @@ public class RTSCamera : MonoBehaviour
                 if (hit.collider.gameObject.tag == "Resource")
                 {
                     //Move the character to this location
-                    PersonalUnitManager.instance.selectedUnits[0].GetComponent<PlayerUnitAIMove>().agent.SetDestination(hit.point);
+                    for (int i = 0; i < PersonalUnitManager.instance.selectedUnits.Count; i++)
+                    {
+                        PersonalUnitManager.instance.selectedUnits[i].GetComponent<PlayerUnitAIMove>().agent.SetDestination(hit.point);
+                    }
 
                     GameObject resource = hit.collider.gameObject;
                     Debug.Log("Resource");

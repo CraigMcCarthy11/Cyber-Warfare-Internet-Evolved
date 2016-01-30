@@ -72,6 +72,11 @@ public class PlayerUnitAIMove : MonoBehaviour
                     script.GoToLastResource();
                 }
             }
+            else if(col.gameObject.name == "GasBuilding")
+            {
+                //Start getting resources
+                //StartCoroutine(script.StartGatheringResourceCycle(col.gameObject));
+            }
         }
     }
 
