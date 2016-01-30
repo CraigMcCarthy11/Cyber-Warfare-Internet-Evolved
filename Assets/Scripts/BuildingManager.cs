@@ -75,7 +75,7 @@ public class BuildingManager : MonoBehaviour {
         if (!placeAtLocation)
         {
             // Blow that shit UP!!!
-            Destroy(currentItem);
+            DestroyImmediate(currentItem);
         }
         else
         {

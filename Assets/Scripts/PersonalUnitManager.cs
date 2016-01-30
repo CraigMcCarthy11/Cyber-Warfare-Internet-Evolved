@@ -61,10 +61,10 @@ public class PersonalUnitManager : MonoBehaviour {
     public void ClearSelection()
     {
         //Clears render selection
-        for (int i = 0; i < selectedUnits.Count; i++)
+        /*for (int i = 0; i < selectedUnits.Count; i++)
         {
             selectedUnits[i].GetComponentInChildren<Renderer>().material.shader = Shader.Find("Standard");
-        }
+        }*/
         selectedUnits.Clear();
     }
 

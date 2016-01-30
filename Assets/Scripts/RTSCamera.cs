@@ -3,30 +3,32 @@ using System.Collections;
 
 public class RTSCamera : MonoBehaviour
 {
-    public static Rect selection = new Rect(0, 0, 0, 0);
-    public int speed = 1;
-    public int clippingSize = 25;
-    public Texture2D selectionBox = null;
-    public Transform target;
 
+    //Creating a fake start click that we can check against
+    private Vector3 startClick = -Vector3.one;
+    public RectTransform selectionBox;
+    public static Rect selection = new Rect(0, 0, 0, 0);
+    public int cameraSpeed = 1;
+    public int clippingSize = 25;
+    public Transform target;
+    //Move to canvas objects
     public GameObject goToCanvasObject;
     public GameObject createdUI;
 
     public bool isLocked = false;
 
     private float doubleTapTime;
-    //Creating a fake start click we can check against
-    private Vector3 startClick = -Vector3.one;
 
     // Use this for initialization
     void Start()
     {
-
+        selectionBox.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
+        //TODO: Maybe combine these?
         HandleInput();
         CheckCamera();
         HandleLockedCameraAndMovement();
@@ -53,11 +55,11 @@ public class RTSCamera : MonoBehaviour
 
         if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
-            transform.Translate(0, 0, -speed, Space.Self);
+            transform.Translate(0, 0, -cameraSpeed, Space.Self);
         }
         else if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
-            transform.Translate(0, 0, +speed, Space.Self);
+            transform.Translate(0, 0, +cameraSpeed, Space.Self);
         }
 
         //As long as we are not following someone, we can use edge panning
@@ -71,27 +73,27 @@ public class RTSCamera : MonoBehaviour
             //Move accordingly
             if (recdown.Contains(Input.mousePosition) || Input.GetKey("s"))
             {
-                transform.Translate(0, -speed, -speed, Space.Self);
+                transform.Translate(0, -cameraSpeed, -cameraSpeed, Space.Self);
             }
             if (recup.Contains(Input.mousePosition) || Input.GetKey("w"))
             {
-                transform.Translate(0, speed, speed, Space.Self);
+                transform.Translate(0, cameraSpeed, cameraSpeed, Space.Self);
             }
             if (recleft.Contains(Input.mousePosition) || Input.GetKey("a"))
             {
-                transform.Translate(-speed, 0, 0, Space.Self);
+                transform.Translate(-cameraSpeed, 0, 0, Space.Self);
             }
             if (recright.Contains(Input.mousePosition) || Input.GetKey("d"))
             {
-                transform.Translate(speed, 0, 0, Space.Self);
+                transform.Translate(cameraSpeed, 0, 0, Space.Self);
             }
             if (Input.GetKey("q"))
             {
-                transform.Rotate(new Vector3(0, 1, -1) * speed, Space.Self);
+                transform.Rotate(new Vector3(0, 1, -1) * cameraSpeed, Space.Self);
             }
             if (Input.GetKey("e"))
             {
-                transform.Rotate(new Vector3(0, -1, 1) * speed, Space.Self);
+                transform.Rotate(new Vector3(0, -1, 1) * cameraSpeed, Space.Self);
             }
         }
         else if (isLocked)
@@ -101,14 +103,6 @@ public class RTSCamera : MonoBehaviour
             targetVector.y = transform.position.y;
             targetVector.z = target.transform.position.z - 21;
             transform.position = targetVector;
-            /*if (Input.GetKey("q"))
-            {
-                //Orbit camera to left centered around unit
-            }
-            if (Input.GetKey("e"))
-            {
-                //Orbit camera to right centered around unit
-            }*/
         }
     }
 
@@ -123,19 +117,31 @@ public class RTSCamera : MonoBehaviour
             //Move the player to the click if they are in selected
             if (Physics.Raycast(screenRay, out hit, 100))
             {
-                for (int i = 0; i < PersonalUnitManager.instance.selectedUnits.Count; i++)
+                //If we click on a weapon
+                if (hit.collider.gameObject.tag == "Resource")
                 {
-                    Debug.Log("Hit the ground! Moving selected to this location");
-                    PersonalUnitManager.instance.selectedUnits[i].GetComponent<PlayerUnitAIMove>().agent.SetDestination(hit.point);
+                    //Move the character to this location
+                    PersonalUnitManager.instance.selectedUnits[0].GetComponent<PlayerUnitAIMove>().agent.SetDestination(hit.point);
+
+                    GameObject resource = hit.collider.gameObject;
+                    Debug.Log("Resource");
                 }
-                //Instantiate the UI where the current selection is moving too.
-                //Used for placing texture
-                float surfaceOffset = 0.1f;
-                if (createdUI != null)
+                else
                 {
-                    Destroy(createdUI);
+                    for (int i = 0; i < PersonalUnitManager.instance.selectedUnits.Count; i++)
+                    {
+                        Debug.Log("Hit the ground! Moving selected to this location");
+                        PersonalUnitManager.instance.selectedUnits[i].GetComponent<PlayerUnitAIMove>().agent.SetDestination(hit.point);
+                    }
+                    //Instantiate the UI where the current selection is moving too.
+                    //Used for placing texture
+                    float surfaceOffset = 0.1f;
+                    if (createdUI != null)
+                    {
+                        DestroyImmediate(createdUI);
+                    }
+                    createdUI = GameObject.Instantiate(goToCanvasObject, (hit.point + hit.normal * surfaceOffset), Quaternion.Euler(90, 0, 0)) as GameObject;
                 }
-                createdUI = GameObject.Instantiate(goToCanvasObject, (hit.point + hit.normal * surfaceOffset), Quaternion.Euler(90, 0, 0)) as GameObject;
             }
 
         }
@@ -145,7 +151,7 @@ public class RTSCamera : MonoBehaviour
             //Destroy the placement
             if (createdUI != null)
             {
-                DestroyImmediate(createdUI, true);
+                DestroyImmediate(createdUI);
             }
             RaycastHit hit;
             //On Left mouse click
@@ -175,47 +181,39 @@ public class RTSCamera : MonoBehaviour
     private void CheckCamera()
     {
         if (Input.GetMouseButtonDown(0))
+        {
+            selectionBox.gameObject.SetActive(true);
             startClick = Input.mousePosition;
-
+        }
         else if (Input.GetMouseButtonUp(0))
         {
-            //We cant check the selection box containing 
-            //unless the selection box is positive
-            //so this fixes people clicking bottom right -> top left
-            //By inversing the selection
-            if (selection.width < 0)
-            {
-                selection.x += selection.width;
-                selection.width = -selection.width;
-            }
-            if (selection.height < 0)
-            {
-                selection.y += selection.height;
-                selection.height = -selection.height;
-            }
+            selectionBox.gameObject.SetActive(false);
             startClick = -Vector3.one;
+
+            selectionBox.sizeDelta = new Vector2(0, 0); // ====== ADDED ====== 
+            selectionBox.position = new Vector2(0,0); // ====== ADDED ======
+            
         }
+
         //Creates the selection
         if (Input.GetMouseButton(0))
-            selection = new Rect(startClick.x, ScreenToRectSpaceInvert(startClick.y), Input.mousePosition.x - startClick.x, ScreenToRectSpaceInvert(Input.mousePosition.y) - ScreenToRectSpaceInvert(startClick.y));
+            selection = new Rect(startClick.x, InvertMouseY(startClick.y), Input.mousePosition.x - startClick.x, InvertMouseY(Input.mousePosition.y) - InvertMouseY(startClick.y));
+        if (selection.width < 0) 
+        { 
+            selection.x += selection.width; 
+            selection.width = -selection.width; 
+        } 
+        if (selection.height < 0) 
+        { 
+            selection.y += selection.height; 
+            selection.height = -selection.height; 
+        } 
+        selectionBox.position = new Vector2(selection.x, InvertMouseY(selection.y + selection.height)); // ====== ADDED ====== 
+        selectionBox.sizeDelta = new Vector2(selection.width, selection.height); // ====== ADDED ====== }
     }
     #endregion
 
-    private void OnGUI()
-    {
-        //Draws the box on screen
-        if (startClick != -Vector3.one)
-        {
-            GUI.color = new Color(1, 1, 1, 0.5f);
-            GUI.DrawTexture(selection, selectionBox);
-        }
-    }
-
-    public static float ScreenToRectSpaceInvert(float y)
-    {
-        //We have to invert the mouse return because
-        //unity screen space coordinates are opposite
-        //than the numbers we return when raycasting
-        return Screen.height - y;
+    public static float InvertMouseY(float y) { 
+        return Screen.height - y; 
     }
 }
