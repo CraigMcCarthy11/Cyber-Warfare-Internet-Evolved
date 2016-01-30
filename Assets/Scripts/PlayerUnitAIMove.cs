@@ -64,8 +64,7 @@ public class PlayerUnitAIMove : MonoBehaviour
         //When ally building is entered
         else if (col.gameObject.tag == "AllyBuilding")
         {
-            EnumManager.BuildingType type = col.gameObject.GetComponent<Building>().buildingType;
-            
+            EnumManager.BuildingType type = col.gameObject.GetComponent<Building>().buildingType;         
             //and its the home base
             if (type == EnumManager.BuildingType.HomeBase)
             {

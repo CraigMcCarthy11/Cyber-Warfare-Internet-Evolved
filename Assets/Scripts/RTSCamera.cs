@@ -114,7 +114,7 @@ public class RTSCamera : MonoBehaviour
 
             RaycastHit hit;
             //Move the player to the click if they are in selected
-            if (Physics.Raycast(screenRay, out hit, 100))
+            if (Physics.Raycast(screenRay, out hit, Mathf.Infinity))
             {
                 //If we click on a weapon
                 if (hit.collider.gameObject.tag == "Resource")
@@ -124,15 +124,27 @@ public class RTSCamera : MonoBehaviour
                     {
                         PersonalUnitManager.instance.selectedUnits[i].GetComponent<PlayerUnitAIMove>().agent.SetDestination(hit.point);
                     }
+                }
+                else if (hit.collider.gameObject.tag == "AllyBuilding")
+                {
+                    EnumManager.BuildingType type = hit.collider.gameObject.GetComponent<Building>().buildingType;
+
+                    //and its the home base
+                    if (type == EnumManager.BuildingType.InternetGasCollector)
+                    {
+                        //Move the character to this location
+                        for (int i = 0; i < PersonalUnitManager.instance.selectedUnits.Count; i++)
+                        {
+                            PersonalUnitManager.instance.selectedUnits[i].GetComponent<PlayerUnitAIMove>().agent.SetDestination(hit.point);
+                        }
+                    }
 
                     GameObject resource = hit.collider.gameObject;
-                    Debug.Log("Resource");
                 }
                 else
                 {
                     for (int i = 0; i < PersonalUnitManager.instance.selectedUnits.Count; i++)
                     {
-                        Debug.Log("Hit the ground! Moving selected to this location");
                         PersonalUnitManager.instance.selectedUnits[i].GetComponent<PlayerUnitAIMove>().agent.SetDestination(hit.point);
                     }
                     //Instantiate the UI where the current selection is moving too.
