@@ -3,7 +3,6 @@ using System.Collections;
 
 public class RTSCamera : MonoBehaviour
 {
-
     //Creating a fake start click that we can check against
     private Vector3 startClick = -Vector3.one;
     public RectTransform selectionBox;
@@ -143,7 +142,11 @@ public class RTSCamera : MonoBehaviour
                     {
                         DestroyImmediate(createdUI);
                     }
-                    createdUI = GameObject.Instantiate(goToCanvasObject, (hit.point + hit.normal * surfaceOffset), Quaternion.Euler(90, 0, 0)) as GameObject;
+
+                    if (PersonalUnitManager.instance.selectedUnits.Count > 0)
+                    {
+                        createdUI = GameObject.Instantiate(goToCanvasObject, (hit.point + hit.normal * surfaceOffset), Quaternion.Euler(90, 0, 0)) as GameObject;
+                    }
                 }
             }
 

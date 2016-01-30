@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-
     private static GameManager thisInstance;
     public GameObject homeBase;
+    public EnumManager.Faction playerFaction;
 
     //Resources
     public float internetGas;
@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        SetPlayerFaction();
         PersonalUnitManager.instance.SetUnitsStart();
         SetHomeBase();
     }
@@ -65,5 +66,10 @@ public class GameManager : MonoBehaviour
     void SetHomeBase()
     {
         homeBase = GameObject.FindGameObjectWithTag("AllyBuilding");
+    }
+
+    void SetPlayerFaction()
+    {
+
     }
 }

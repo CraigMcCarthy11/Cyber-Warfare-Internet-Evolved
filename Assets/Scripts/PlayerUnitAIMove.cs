@@ -75,7 +75,11 @@ public class PlayerUnitAIMove : MonoBehaviour
             else if(col.gameObject.name == "GasBuilding")
             {
                 //Start getting resources
-                //StartCoroutine(script.StartGatheringResourceCycle(col.gameObject));
+                Worker script = this.gameObject.GetComponent<Worker>();
+                if (script != null)
+                {
+                    StartCoroutine(script.StartGatheringResourceCycle(col.gameObject));
+                }
             }
         }
     }
