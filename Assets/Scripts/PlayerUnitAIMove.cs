@@ -57,14 +57,17 @@ public class PlayerUnitAIMove : MonoBehaviour
             Worker script = this.gameObject.GetComponent<Worker>();
             if (script != null)
             {
-                StartCoroutine(script.StartGatheringResourceCycle(col.gameObject));
+                //StartCoroutine(script.StartGatheringResourceCycle(col.gameObject));
+                Debug.Log("HEY DUMB SHIT WHY DONT YOU BUILD SOMETHING HERE XD!");
             }
         }
         //When ally building is entered
         else if (col.gameObject.tag == "AllyBuilding")
         {
+            EnumManager.BuildingType type = col.gameObject.GetComponent<Building>().buildingType;
+            
             //and its the home base
-            if(col.gameObject.name == "HomeBase")
+            if (type == EnumManager.BuildingType.HomeBase)
             {
                 Worker script = this.gameObject.GetComponent<Worker>();
                 if (script != null && script.lastResource != null)
@@ -72,7 +75,7 @@ public class PlayerUnitAIMove : MonoBehaviour
                     script.GoToLastResource();
                 }
             }
-            else if(col.gameObject.name == "GasBuilding")
+            else if (type == EnumManager.BuildingType.InternetGasCollector)
             {
                 //Start getting resources
                 Worker script = this.gameObject.GetComponent<Worker>();
@@ -80,6 +83,14 @@ public class PlayerUnitAIMove : MonoBehaviour
                 {
                     StartCoroutine(script.StartGatheringResourceCycle(col.gameObject));
                 }
+            }
+            else if (type == EnumManager.BuildingType.Barracks)
+            {
+                Debug.Log("In the barracks");
+            }
+            else if (type == EnumManager.BuildingType.Turret)
+            {
+                Debug.Log("In the turret");
             }
         }
     }

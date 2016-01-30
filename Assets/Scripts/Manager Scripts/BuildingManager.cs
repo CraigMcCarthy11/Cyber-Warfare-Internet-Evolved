@@ -61,6 +61,8 @@ public class BuildingManager : MonoBehaviour {
         Building thisBuilding = currentItem.GetComponent<Building>();
         thisBuilding.parentManager = this;
 
+        thisBuilding.faction = GameManager.instance.playerFaction;
+
         // Begin dragging around the item
         StartCoroutine(thisBuilding.UpdatePlacing());
     }

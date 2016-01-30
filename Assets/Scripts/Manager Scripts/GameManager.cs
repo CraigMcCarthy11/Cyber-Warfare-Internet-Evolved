@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
         SetPlayerFaction();
         PersonalUnitManager.instance.SetUnitsStart();
         SetHomeBase();
+        SetStartingInternetGas();
     }
 
     // Update is called once per frame
@@ -70,6 +71,35 @@ public class GameManager : MonoBehaviour
 
     void SetPlayerFaction()
     {
+        //Gets the faction string and sets it to the enum
+        string FactionString = PlayerPrefs.GetString("Player Faction");
 
+        if (FactionString == "Horizon")
+            playerFaction = EnumManager.Faction.Horizon;
+        if (FactionString == "EightyAndTee")
+            playerFaction = EnumManager.Faction.EightyAndTee;
+        if (FactionString == "DiccsInternet")
+            playerFaction = EnumManager.Faction.DiccsInternet;
+        if (FactionString == "GoggleThread")
+            playerFaction = EnumManager.Faction.GoggleThread;
     }
+
+    void SetStartingInternetGas()
+    {
+        internetGas = 50;
+        UIManager.instance.resourceText.text = "Internet Gas: " + GameManager.instance.internetGas;
+
+        //Gets the faction string and sets it to the enum
+        //string FactionString = PlayerPrefs.GetString("Player Faction");
+
+        /*if (FactionString == "Horizon")
+            playerFaction = EnumManager.Faction.Horizon;
+        if (FactionString == "EightyAndTee")
+            playerFaction = EnumManager.Faction.EightyAndTee;
+        if (FactionString == "DiccsInternet")
+            playerFaction = EnumManager.Faction.DiccsInternet;
+        if (FactionString == "GoggleThread")
+            playerFaction = EnumManager.Faction.GoggleThread;*/
+    }
+
 }

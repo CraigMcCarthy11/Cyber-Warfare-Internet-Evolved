@@ -8,7 +8,5 @@ public class FactionSelect : MonoBehaviour {
     public void ButtonPressed()
     {
         PlayerPrefs.SetString("Player Faction", chosenFaction.ToString());
-
-        Debug.Log(PlayerPrefs.GetString("Player Faction"));
     }
 }

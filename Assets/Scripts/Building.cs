@@ -7,6 +7,9 @@ public class Building : MonoBehaviour {
     public BuildingManager parentManager;
     public List<GameObject> intersectedObjects = new List<GameObject>();
     public List<GameObject> intersectedResources = new List<GameObject>();
+    
+    public EnumManager.BuildingType buildingType;
+    public EnumManager.Faction faction;
 
     /// <summary>
     /// Update method for placing a building
