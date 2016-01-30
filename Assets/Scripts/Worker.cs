@@ -9,11 +9,12 @@ public class Worker : MonoBehaviour {
     public int damage = 2;
     public float speed = 1;
     public EnumManager.UnitType unitType = EnumManager.UnitType.Worker;
+    public EnumManager.Faction factionType;
 
     public GameObject lastResource;
 	// Use this for initialization
 	void Start () {
-	
+        factionType = GameManager.instance.playerFaction;
 	}
 	
 	// Update is called once per frame

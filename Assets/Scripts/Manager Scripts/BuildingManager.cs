@@ -63,8 +63,15 @@ public class BuildingManager : MonoBehaviour {
 
         thisBuilding.faction = GameManager.instance.playerFaction;
 
+        bool canPlace = CheckCost(thisBuilding.buildingType);
+
         // Begin dragging around the item
-        StartCoroutine(thisBuilding.UpdatePlacing());
+        if (canPlace)
+            StartCoroutine(thisBuilding.UpdatePlacing());
+        else
+        {
+            //Play sound here that makes the player sad they arent rich enough
+        }
     }
 
     /// <summary>
@@ -87,5 +94,45 @@ public class BuildingManager : MonoBehaviour {
 
         // Stop holding the item
         currentItem = null; 
+    }
+
+    /// <summary>
+    /// We check the cost of the buildings here before we place it to make sure you are allowed to place them.
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public bool CheckCost(EnumManager.BuildingType type)
+    {
+        bool canPlace = false;
+        //and its the home base
+        /*if (type == EnumManager.BuildingType.HomeBase)
+        {
+
+        }*/
+        if (type == EnumManager.BuildingType.InternetGasCollector)
+        {
+            if (GameManager.instance.internetGas >= 50)
+            {
+                canPlace = true;
+                UIManager.instance.UpdateUserResource(-50f);
+            }
+        }
+        else if (type == EnumManager.BuildingType.Barracks)
+        {
+            if (GameManager.instance.internetGas >= 200)
+            {
+                canPlace = true;
+                UIManager.instance.UpdateUserResource(-200f);
+            }
+        }
+        else if (type == EnumManager.BuildingType.Turret)
+        {
+            if (GameManager.instance.internetGas >= 350)
+            {
+                canPlace = true;
+                UIManager.instance.UpdateUserResource(-350f);
+            }
+        }
+        return canPlace;
     }
 }

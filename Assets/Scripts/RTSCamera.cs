@@ -175,6 +175,10 @@ public class RTSCamera : MonoBehaviour
                     hit.collider.gameObject.GetComponent<PlayerUnitAIMove>().MakeSelected();
                     Camera.main.GetComponent<RTSCamera>().target = hit.collider.gameObject.transform;
                 }
+                /*else if (BuildingManager.in)
+                {
+
+                }*/
                 else //We hit something other than a character
                 {
                     //If we hit the ground we clear the selection
