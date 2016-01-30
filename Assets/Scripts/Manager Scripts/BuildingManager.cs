@@ -80,6 +80,7 @@ public class BuildingManager : MonoBehaviour {
         else
         {
             currentItem.GetComponent<BoxCollider>().isTrigger = false;
+            buildings.Add(currentItem.GetComponent<Building>());
         }
 
         // Stop holding the item
