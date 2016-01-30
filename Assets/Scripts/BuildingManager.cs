@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
@@ -19,19 +18,23 @@ public struct PlaceableStructure
 /// Spawns buttons based on the list in the inspector
 /// Spawns structures when buttons are pressed
 /// </summary>
-public class BuildingPlacer : MonoBehaviour {
+public class BuildingManager : MonoBehaviour {
 
     public EventSystem evtSystem;
     public RectTransform selectionRect;
     public List<PlaceableStructure> placeableStructures = new List<PlaceableStructure>();
     private GameObject currentItem;
-    private LayerMask mask; 
+    public int terrainMask;
+    public int buildingMask;
+
+    public List<Building> buildings = new List<Building>();
 
 	// Use this for variable initialization
 	void Start ()
     {
         // Get the correct layer for colliding with
-        mask = LayerMask.NameToLayer("Terrain");
+        terrainMask = 1 << LayerMask.NameToLayer("Terrain");
+        buildingMask = 1 << LayerMask.NameToLayer("Buildings");
 
         // Spawn all the building buttons
         for (int i = 0; i < placeableStructures.Count; i++)
@@ -55,62 +58,18 @@ public class BuildingPlacer : MonoBehaviour {
         currentItem.transform.position = new Vector3(0, 100, 0);
         currentItem.transform.rotation = Quaternion.identity;
 
+        Building thisBuilding = currentItem.AddComponent<Building>();
+        thisBuilding.parentManager = this;
+
         // Begin dragging around the item
-        StartCoroutine(UpdatePlacing());
-    }
-
-    /// <summary>
-    /// Update method for placing a building
-    /// </summary>
-    IEnumerator UpdatePlacing()
-    {
-        // Always true loop, break to escape
-        while (true)
-        {
-            // Dont bother continuing if current item is null;
-            if (currentItem == null)
-            {
-                break;
-            }
-            
-            // If we hit our ray on the layer, update the position of our building.
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            int layerMask = 1 << mask.value;
-
-            // Does the ray intersect any objects which are in the player layer.
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
-            {
-                currentItem.transform.position = hit.point;
-            }
-
-            // If we click down...
-            if(Input.GetMouseButtonDown(0))
-            {
-                // When over any form of UI
-                if(evtSystem.IsPointerOverGameObject())
-                {
-                    // Disable placing
-                    EndPlacing(false);
-                    break;
-                }
-                else
-                {
-                    // Place our building
-                    EndPlacing(true);
-                    break;
-                }
-            }
-            yield return null;
-        }
+        StartCoroutine(thisBuilding.UpdatePlacing());
     }
 
     /// <summary>
     /// Unlinks our current object and either places or destroys it
     /// </summary>
     /// <param name="placeAtLocation"> determines if we cancel or finish placement </param>
-    void EndPlacing(bool placeAtLocation)
+    public void EndPlacing(bool placeAtLocation)
     {
         // If we are not placing...
         if (!placeAtLocation)
@@ -120,10 +79,10 @@ public class BuildingPlacer : MonoBehaviour {
         }
         else
         {
-            // Enable the collider for normal function
-            currentItem.GetComponent<BoxCollider>().enabled = true;
-        } 
-        
-        currentItem = null; // Stop holding the item
+            currentItem.GetComponent<BoxCollider>().isTrigger = false;
+        }
+
+        // Stop holding the item
+        currentItem = null; 
     }
 }
