@@ -25,7 +25,7 @@ public class BuildingManager : MonoBehaviour {
     public List<PlaceableStructure> placeableStructures = new List<PlaceableStructure>();
     private GameObject currentItem;
     public int terrainMask;
-    public int buildingMask;
+    public int resourceMask;
 
     public List<Building> buildings = new List<Building>();
 
@@ -34,7 +34,7 @@ public class BuildingManager : MonoBehaviour {
     {
         // Get the correct layer for colliding with
         terrainMask = 1 << LayerMask.NameToLayer("Terrain");
-        buildingMask = 1 << LayerMask.NameToLayer("Buildings");
+        resourceMask = 1 << LayerMask.NameToLayer("Resource");
 
         // Spawn all the building buttons
         for (int i = 0; i < placeableStructures.Count; i++)
@@ -58,7 +58,7 @@ public class BuildingManager : MonoBehaviour {
         currentItem.transform.position = new Vector3(0, 100, 0);
         currentItem.transform.rotation = Quaternion.identity;
 
-        Building thisBuilding = currentItem.AddComponent<Building>();
+        Building thisBuilding = currentItem.GetComponent<Building>();
         thisBuilding.parentManager = this;
 
         // Begin dragging around the item

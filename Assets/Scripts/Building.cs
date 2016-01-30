@@ -6,11 +6,12 @@ public class Building : MonoBehaviour {
 
     public BuildingManager parentManager;
     public List<GameObject> intersectedObjects = new List<GameObject>();
+    public List<GameObject> intersectedResources = new List<GameObject>();
 
     /// <summary>
     /// Update method for placing a building
     /// </summary>
-    public IEnumerator UpdatePlacing()
+    public virtual IEnumerator UpdatePlacing()
     {
         while(parentManager == null)
         {
@@ -58,7 +59,7 @@ public class Building : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter(Collider col)
+    protected virtual void OnTriggerEnter(Collider col)
     {
         if (1 << col.gameObject.layer != parentManager.terrainMask)
         {
@@ -66,7 +67,7 @@ public class Building : MonoBehaviour {
         }
     }
 
-    void OnTriggerExit(Collider col)
+    protected virtual void OnTriggerExit(Collider col)
     {
         if (intersectedObjects.Contains(col.gameObject))
         {
