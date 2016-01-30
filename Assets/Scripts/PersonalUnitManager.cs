@@ -2,27 +2,30 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GameManager : MonoBehaviour
-{
+public class PersonalUnitManager : MonoBehaviour {
 
-    private static GameManager thisInstance;
+    private static PersonalUnitManager thisInstance;
+
+    public List<GameObject> units = new List<GameObject>();
+    public List<GameObject> selectedUnits = new List<GameObject>();
 
     #region Singleton Stuff
     /// <summary>
     /// Constructor that handles getting and setting the instance
     /// this is using the singleton pattern
     /// </summary>
-    public static GameManager instance
+    public static PersonalUnitManager instance
     {
         get
         {
             if (thisInstance == null)
             {
-                thisInstance = GameObject.FindObjectOfType<GameManager>();
+                thisInstance = GameObject.FindObjectOfType<PersonalUnitManager>();
 
                 //Tell unity not to destroy this object when loading a new scene!
                 DontDestroyOnLoad(thisInstance.gameObject);
             }
+
             return thisInstance;
         }
     }
@@ -45,16 +48,27 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
-    // Use this for initialization
-    void Start()
+	// Use this for initialization
+	void Start () {
+	    
+	}
+	
+	// Update is called once per frame
+	void Update () {
+	
+	}
+
+    public void ClearSelection()
     {
-        PersonalUnitManager.instance.SetUnitsStart();
+        //Clears render selection
+        for (int i = 0; i < selectedUnits.Count; i++)
+        {
+            selectedUnits[i].GetComponentInChildren<Renderer>().material.shader = Shader.Find("Standard");
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetUnitsStart()
     {
-
+        units.AddRange(GameObject.FindGameObjectsWithTag("AllyUnits"));
     }
-
 }
