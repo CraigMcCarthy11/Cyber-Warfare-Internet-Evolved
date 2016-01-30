@@ -28,10 +28,10 @@ public class SnapBuilding : Building {
             {
                 newPosition = hit.point;
             }
-            
-            if(intersectedResources.Count > 0)
+
+            int snappedToIndex = -1;
+            if (intersectedResources.Count > 0)
             {
-                int snappedToIndex = -1;
                 float minDistance = -1;
                 for(int i = 0; i < intersectedResources.Count; i++)
                 {
@@ -67,6 +67,10 @@ public class SnapBuilding : Building {
                 {
                     if (intersectedObjects.Count < 1 && intersectedResources.Count > 0)
                     {
+                        if (snappedToIndex != -1)
+                        {
+                            intersectedResources[snappedToIndex].SetActive(false);
+                        }
                         // Place our building
                         parentManager.EndPlacing(true);
                         break;
