@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RTSCamera : MonoBehaviour {
+public class RTSCamera : MonoBehaviour
+{
     public static Rect selection = new Rect(0, 0, 0, 0);
     public int speed = 1;
     public int clippingSize = 25;
@@ -17,17 +18,19 @@ public class RTSCamera : MonoBehaviour {
     //Creating a fake start click we can check against
     private Vector3 startClick = -Vector3.one;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    // Use this for initialization
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         HandleInput();
         CheckCamera();
         HandleLockedCameraAndMovement();
-	}
+    }
 
     #region CAMERA FUNCTIONS
     void HandleLockedCameraAndMovement()
@@ -98,14 +101,14 @@ public class RTSCamera : MonoBehaviour {
             targetVector.y = transform.position.y;
             targetVector.z = target.transform.position.z - 21;
             transform.position = targetVector;
-            if (Input.GetKey("q"))
+            /*if (Input.GetKey("q"))
             {
                 //Orbit camera to left centered around unit
             }
             if (Input.GetKey("e"))
             {
                 //Orbit camera to right centered around unit
-            }
+            }*/
         }
     }
 
@@ -120,39 +123,19 @@ public class RTSCamera : MonoBehaviour {
             //Move the player to the click if they are in selected
             if (Physics.Raycast(screenRay, out hit, 100))
             {
-                //If we click on a weapon
-                if (hit.collider.gameObject.tag == "Weapon")
+                for (int i = 0; i < PersonalUnitManager.instance.selectedUnits.Count; i++)
                 {
-                    //Move the character to this location
-                    PersonalUnitManager.instance.selectedUnits[0].GetComponent<PlayerUnitAIMove>().agent.SetDestination(hit.point);
-                    //TODO: Make it so they wait until they are on the weapon to pick it up
-
-                    GameObject weapon = hit.collider.gameObject;
-
-                    Debug.Log("Hit weapon: " + weapon.name);
-
-                    //Remove the collider, then parent it and move it.
-                    Destroy(weapon.GetComponent<Collider>());
-                    weapon.transform.parent = PersonalUnitManager.instance.selectedUnits[0].transform;
-                    weapon.transform.localPosition = new Vector3(-.64f, 0.043f, 0.084f);
-                    //weapon.transform.localRotation = new Quaternion(271.5f, 233.1f, 233.5f, 0f);
+                    Debug.Log("Hit the ground! Moving selected to this location");
+                    PersonalUnitManager.instance.selectedUnits[i].GetComponent<PlayerUnitAIMove>().agent.SetDestination(hit.point);
                 }
-                else
+                //Instantiate the UI where the current selection is moving too.
+                //Used for placing texture
+                float surfaceOffset = 0.1f;
+                if (createdUI != null)
                 {
-                    for (int i = 0; i < PersonalUnitManager.instance.selectedUnits.Count; i++)
-                    {
-                        Debug.Log("Hit the ground! Moving selected to this location");
-                        PersonalUnitManager.instance.selectedUnits[i].GetComponent<PlayerUnitAIMove>().agent.SetDestination(hit.point);
-                    }
-                    //Instantiate the UI where the current selection is moving too.
-                    //Used for placing texture
-                    float surfaceOffset = 0.1f;
-                    if (createdUI != null)
-                    {
-                        Destroy(createdUI);
-                    }
-                    createdUI = GameObject.Instantiate(goToCanvasObject, (hit.point + hit.normal * surfaceOffset), Quaternion.Euler(90, 0, 0)) as GameObject;
+                    Destroy(createdUI);
                 }
+                createdUI = GameObject.Instantiate(goToCanvasObject, (hit.point + hit.normal * surfaceOffset), Quaternion.Euler(90, 0, 0)) as GameObject;
             }
 
         }

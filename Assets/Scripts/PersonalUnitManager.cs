@@ -65,6 +65,7 @@ public class PersonalUnitManager : MonoBehaviour {
         {
             selectedUnits[i].GetComponentInChildren<Renderer>().material.shader = Shader.Find("Standard");
         }
+        selectedUnits.Clear();
     }
 
     public void SetUnitsStart()
