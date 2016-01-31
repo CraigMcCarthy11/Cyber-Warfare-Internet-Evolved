@@ -127,10 +127,10 @@ public class RTSCamera : MonoBehaviour
                 }
                 else if (hit.collider.gameObject.tag == "AllyBuilding")
                 {
-                    EnumManager.BuildingType type = hit.collider.gameObject.GetComponent<Building>().buildingType;
+                    BuildingType type = hit.collider.gameObject.GetComponent<Building>().buildingType;
 
                     //and its the home base
-                    if (type == EnumManager.BuildingType.InternetGasCollector)
+                    if (type == BuildingType.InternetGasCollector)
                     {
                         //Move the character to this location
                         for (int i = 0; i < PersonalUnitManager.instance.selectedUnits.Count; i++)

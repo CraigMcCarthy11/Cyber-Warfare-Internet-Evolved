@@ -5,8 +5,9 @@ using System.Collections.Generic;
 public class GameManager : MonoBehaviour
 {
     private static GameManager thisInstance;
-    public GameObject homeBase;
-    public EnumManager.Faction playerFaction;
+    public GameObject[] homeBases;
+    public GameObject playerHomeBase;
+    public Faction playerFaction;
 
     //Resources
     public float internetGas;
@@ -54,7 +55,7 @@ public class GameManager : MonoBehaviour
     {
         SetPlayerFaction();
         PersonalUnitManager.instance.SetUnitsStart();
-        SetHomeBase();
+        SetHomeBases();
         SetStartingInternetGas();
     }
 
@@ -64,9 +65,21 @@ public class GameManager : MonoBehaviour
 
     }
 
-    void SetHomeBase()
+    void SetHomeBases()
     {
-        homeBase = GameObject.FindGameObjectWithTag("AllyBuilding");
+        //Goes through all the home bases and sets this player base as the correct one on games start
+        homeBases = GameObject.FindGameObjectsWithTag("AllyBuilding");
+        for (int i = 0; i < homeBases.Length; i++)
+        {
+            if (homeBases[i].GetComponent<Building>().faction == playerFaction)
+            {
+                playerHomeBase = homeBases[i];
+            }
+            else
+            {
+                homeBases[i].gameObject.tag = "EnemyBuilding";
+            }
+        }
     }
 
     void SetPlayerFaction()
@@ -75,13 +88,13 @@ public class GameManager : MonoBehaviour
         string FactionString = PlayerPrefs.GetString("Player Faction");
 
         if (FactionString == "Horizon")
-            playerFaction = EnumManager.Faction.Horizon;
+            playerFaction = Faction.Horizon;
         if (FactionString == "EightyAndTee")
-            playerFaction = EnumManager.Faction.EightyAndTee;
+            playerFaction = Faction.EightyAndTee;
         if (FactionString == "DiccsInternet")
-            playerFaction = EnumManager.Faction.DiccsInternet;
+            playerFaction = Faction.DiccsInternet;
         if (FactionString == "GoggleThread")
-            playerFaction = EnumManager.Faction.GoggleThread;
+            playerFaction = Faction.GoggleThread;
     }
 
     void SetStartingInternetGas()

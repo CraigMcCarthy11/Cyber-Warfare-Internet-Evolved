@@ -64,9 +64,9 @@ public class PlayerUnitAIMove : MonoBehaviour
         //When ally building is entered
         else if (col.gameObject.tag == "AllyBuilding")
         {
-            EnumManager.BuildingType type = col.gameObject.GetComponent<Building>().buildingType;         
+            BuildingType type = col.gameObject.GetComponent<Building>().buildingType;         
             //and its the home base
-            if (type == EnumManager.BuildingType.HomeBase)
+            if (type == BuildingType.HomeBase)
             {
                 Worker script = this.gameObject.GetComponent<Worker>();
                 if (script != null && script.lastResource != null)
@@ -74,7 +74,7 @@ public class PlayerUnitAIMove : MonoBehaviour
                     script.GoToLastResource();
                 }
             }
-            else if (type == EnumManager.BuildingType.InternetGasCollector)
+            else if (type == BuildingType.InternetGasCollector)
             {
                 //Start getting resources
                 Worker script = this.gameObject.GetComponent<Worker>();
@@ -83,11 +83,11 @@ public class PlayerUnitAIMove : MonoBehaviour
                     StartCoroutine(script.StartGatheringResourceCycle(col.gameObject));
                 }
             }
-            else if (type == EnumManager.BuildingType.Barracks)
+            else if (type == BuildingType.Barracks)
             {
                 Debug.Log("In the barracks");
             }
-            else if (type == EnumManager.BuildingType.Turret)
+            else if (type == BuildingType.Turret)
             {
                 Debug.Log("In the turret");
             }
@@ -97,6 +97,6 @@ public class PlayerUnitAIMove : MonoBehaviour
     public void MoveToHomeBase()
     {
         //Move the character to this location
-        this.gameObject.GetComponent<PlayerUnitAIMove>().agent.SetDestination(GameManager.instance.homeBase.transform.position);
+        this.gameObject.GetComponent<PlayerUnitAIMove>().agent.SetDestination(GameManager.instance.playerHomeBase.transform.position);
     }
 }

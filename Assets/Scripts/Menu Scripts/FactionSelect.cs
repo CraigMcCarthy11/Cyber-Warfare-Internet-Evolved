@@ -3,7 +3,7 @@ using System.Collections;
 
 public class FactionSelect : MonoBehaviour {
 
-    public EnumManager.Faction chosenFaction;
+    public Faction chosenFaction;
 
     public void ButtonPressed()
     {

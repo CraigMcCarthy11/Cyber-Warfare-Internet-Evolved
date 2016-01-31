@@ -101,7 +101,7 @@ public class BuildingManager : MonoBehaviour {
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public bool CheckCost(EnumManager.BuildingType type)
+    public bool CheckCost(BuildingType type)
     {
         bool canPlace = false;
         //and its the home base
@@ -109,7 +109,7 @@ public class BuildingManager : MonoBehaviour {
         {
 
         }*/
-        if (type == EnumManager.BuildingType.InternetGasCollector)
+        if (type == BuildingType.InternetGasCollector)
         {
             if (GameManager.instance.internetGas >= 50)
             {
@@ -117,7 +117,7 @@ public class BuildingManager : MonoBehaviour {
                 UIManager.instance.UpdateUserResource(-50f);
             }
         }
-        else if (type == EnumManager.BuildingType.Barracks)
+        else if (type == BuildingType.Barracks)
         {
             if (GameManager.instance.internetGas >= 200)
             {
@@ -125,7 +125,7 @@ public class BuildingManager : MonoBehaviour {
                 UIManager.instance.UpdateUserResource(-200f);
             }
         }
-        else if (type == EnumManager.BuildingType.Turret)
+        else if (type == BuildingType.Turret)
         {
             if (GameManager.instance.internetGas >= 350)
             {
