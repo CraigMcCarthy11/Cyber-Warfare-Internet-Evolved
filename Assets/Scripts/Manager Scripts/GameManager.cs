@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
     private static GameManager thisInstance;
     public GameObject[] homeBases;
     public GameObject playerHomeBase;
+    public GameObject scriptHolder;
+
     public Faction playerFaction;
 
     //Resources
@@ -53,6 +55,7 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        scriptHolder = this.gameObject;
         SetPlayerFaction();
         PersonalUnitManager.instance.SetUnitsStart();
         SetHomeBases();
@@ -77,7 +80,14 @@ public class GameManager : MonoBehaviour
             }
             else
             {
+                //We create the enemy building stuff
+                //And set its script faction starting shit
+                GameObject obj;
                 homeBases[i].gameObject.tag = "EnemyBuilding";
+                obj = GameObject.Instantiate(PrefabManager.instance.aiScriptPrefab, homeBases[i].gameObject.transform.position, Quaternion.identity) as GameObject;
+                obj.GetComponent<EnemyAIFaction>().thisAIsFaction = homeBases[i].GetComponent<Building>().faction;
+                obj.GetComponent<EnemyAIFaction>().myHomeBase = homeBases[i];
+                obj.name = homeBases[i].GetComponent<Building>().faction.ToString() + " AI Scripts";
             }
         }
     }

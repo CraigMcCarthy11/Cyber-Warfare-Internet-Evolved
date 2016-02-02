@@ -176,7 +176,7 @@ public class RTSCamera : MonoBehaviour
             if (Physics.Raycast(screenRay, out hit, 100))
             {
                 //If we hit a character
-                if (PersonalUnitManager.instance.units.Contains(hit.collider.gameObject))
+                if (PersonalUnitManager.instance.units.Contains(hit.collider.gameObject) && hit.collider.gameObject.GetComponent<UnitData>().factionType == GameManager.instance.playerFaction)
                 {
                     //If a character is selected, remove this selection
                     if (PersonalUnitManager.instance.selectedUnits.Count != 0)

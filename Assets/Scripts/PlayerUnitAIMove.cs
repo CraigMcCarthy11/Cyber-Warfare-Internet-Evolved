@@ -36,7 +36,7 @@ public class PlayerUnitAIMove : MonoBehaviour
     {
         //If the survivor is selected and is NOT in selection
         isSelected = true;
-        if (isSelected == true && !PersonalUnitManager.instance.selectedUnits.Contains(gameObject))
+        if (isSelected == true && !PersonalUnitManager.instance.selectedUnits.Contains(gameObject) && gameObject.GetComponent<UnitData>().factionType == GameManager.instance.playerFaction)
         {
             //Add to selection and add selection
             PersonalUnitManager.instance.selectedUnits.Add(gameObject);
