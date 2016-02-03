@@ -28,6 +28,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 417078}
+  - 114: {fileID: 11415644}
   m_Layer: 0
   m_Name: PrefabHolder
   m_TagString: Untagged
@@ -88,7 +89,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   evtSystem: {fileID: 0}
-  selectionRect: {fileID: 0}
   placeableStructures:
   - buttonPrefab: {fileID: 141732, guid: 26beefb5001830e418a090eab8b8fae4, type: 2}
     structurePrefab: {fileID: 130112, guid: af6cace12e25e544891c466789aeb1d0, type: 2}
@@ -99,6 +99,18 @@ MonoBehaviour:
   terrainMask: 0
   resourceMask: 0
   buildings: []
+--- !u!114 &11415644
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 147920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b10ed273a220c094c89595a60256b475, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aiScriptPrefab: {fileID: 130420, guid: 1352e4dceb1f22a48afb02e682c9d8e2, type: 2}
 --- !u!114 &11418810
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -110,6 +122,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45d0a2d0b5ef0d84782500cd02fd57ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  menuPanels:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   resourceText: {fileID: 0}
 --- !u!114 &11431752
 MonoBehaviour:

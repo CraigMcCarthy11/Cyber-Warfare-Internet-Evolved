@@ -5,6 +5,8 @@ public class EnumManager : MonoBehaviour {
 
 }
 
+public enum MenuMode { BuildingSpawn, HomeBase, Collector, Barracks, Turret };
+
 public enum Status { Normal, Bleeding, Encumbered, Dead };
 
 public enum UnitType { Worker, Tank, Shooter, Vehicle };

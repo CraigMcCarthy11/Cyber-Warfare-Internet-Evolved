@@ -21,7 +21,6 @@ public struct PlaceableStructure
 public class BuildingManager : MonoBehaviour {
 
     public EventSystem evtSystem;
-    public RectTransform selectionRect;
     public List<PlaceableStructure> placeableStructures = new List<PlaceableStructure>();
     private GameObject currentItem;
     public int terrainMask;
@@ -41,7 +40,7 @@ public class BuildingManager : MonoBehaviour {
         {
             int indx = i;
             GameObject btnObj = Instantiate(placeableStructures[i].buttonPrefab) as GameObject;
-            btnObj.transform.SetParent(selectionRect);
+            btnObj.transform.SetParent(UIManager.instance.menuPanels[(int)MenuMode.BuildingSpawn]);
 
             // Set the delegate
             btnObj.GetComponent<Button>().onClick.AddListener(() => { BeginPlacing(indx); });
