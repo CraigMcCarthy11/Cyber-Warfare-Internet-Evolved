@@ -53,20 +53,23 @@ public class BuildingManager : MonoBehaviour {
     /// <param name="index"> this is the idex of the structure we will be placing </param>
     public void BeginPlacing(int index)
     {
-        currentItem = Instantiate(placeableStructures[index].structurePrefab) as GameObject;
-        currentItem.transform.position = new Vector3(0, 100, 0);
-        currentItem.transform.rotation = Quaternion.identity;
+        bool canPlace = CheckCost(placeableStructures[index].structurePrefab.GetComponent<Building>().buildingType);
 
-        Building thisBuilding = currentItem.GetComponent<Building>();
-        thisBuilding.parentManager = this;
-
-        thisBuilding.faction = GameManager.instance.playerFaction;
-
-        bool canPlace = CheckCost(thisBuilding.buildingType);
-
-        // Begin dragging around the item
+        //bool canPlace = CheckCost(thisBuilding.buildingType);
         if (canPlace)
+        {
+            currentItem = Instantiate(placeableStructures[index].structurePrefab) as GameObject;
+            currentItem.transform.position = new Vector3(0, 100, 0);
+            currentItem.transform.rotation = Quaternion.identity;
+
+            Building thisBuilding = currentItem.GetComponent<Building>();
+            thisBuilding.parentManager = this;
+
+            thisBuilding.faction = GameManager.instance.playerFaction;
+
+            // Begin dragging around the item
             StartCoroutine(thisBuilding.UpdatePlacing());
+        }
         else
         {
             //Play sound here that makes the player sad they arent rich enough
