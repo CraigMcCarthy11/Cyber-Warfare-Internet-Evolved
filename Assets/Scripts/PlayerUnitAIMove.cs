@@ -36,12 +36,12 @@ public class PlayerUnitAIMove : MonoBehaviour
     {
         //If the survivor is selected and is NOT in selection
         isSelected = true;
-        if (isSelected == true && !PersonalUnitManager.instance.selectedUnits.Contains(gameObject) && gameObject.GetComponent<UnitData>().factionType == GameManager.instance.playerFaction)
+        if (isSelected == true && !PersonalUnitManager.Instance.selectedUnits.Contains(gameObject) && gameObject.GetComponent<UnitData>().factionType == GameManager.Instance.playerFaction)
         {
             //Add to selection and add selection
-            PersonalUnitManager.instance.selectedUnits.Add(gameObject);
+            PersonalUnitManager.Instance.selectedUnits.Add(gameObject);
             //Add selected to text on UI
-            //UIManager.instance.survivorsSelected.text = UIManager.instance.survivorsSelected.text + " " + gameObject.GetComponent<SurvivorClass>().name;
+            //UIManager.Instance.survivorsSelected.text = UIManager.Instance.survivorsSelected.text + " " + gameObject.GetComponent<SurvivorClass>().name;
 
             Camera.main.GetComponent<RTSCamera>().target = gameObject.transform;
             //gameObject.GetComponentInChildren<Renderer>().material.shader = Shader.Find("Outlined/Silhouetted Bumped Diffuse");
@@ -97,6 +97,6 @@ public class PlayerUnitAIMove : MonoBehaviour
     public void MoveToHomeBase()
     {
         //Move the character to this location
-        this.gameObject.GetComponent<PlayerUnitAIMove>().agent.SetDestination(GameManager.instance.playerHomeBase.transform.position);
+        this.gameObject.GetComponent<PlayerUnitAIMove>().agent.SetDestination(GameManager.Instance.playerHomeBase.transform.position);
     }
 }

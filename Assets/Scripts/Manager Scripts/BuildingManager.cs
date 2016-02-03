@@ -40,7 +40,7 @@ public class BuildingManager : MonoBehaviour {
         {
             int indx = i;
             GameObject btnObj = Instantiate(placeableStructures[i].buttonPrefab) as GameObject;
-            btnObj.transform.SetParent(UIManager.instance.menuPanels[(int)MenuMode.BuildingSpawn]);
+            btnObj.transform.SetParent(UIManager.Instance.menuPanels[(int)MenuMode.BuildingSpawn]);
 
             // Set the delegate
             btnObj.GetComponent<Button>().onClick.AddListener(() => { BeginPlacing(indx); });
@@ -65,7 +65,7 @@ public class BuildingManager : MonoBehaviour {
             Building thisBuilding = currentItem.GetComponent<Building>();
             thisBuilding.parentManager = this;
 
-            thisBuilding.faction = GameManager.instance.playerFaction;
+            thisBuilding.faction = GameManager.Instance.playerFaction;
 
             // Begin dragging around the item
             StartCoroutine(thisBuilding.UpdatePlacing());
@@ -113,26 +113,26 @@ public class BuildingManager : MonoBehaviour {
         }*/
         if (type == BuildingType.InternetGasCollector)
         {
-            if (GameManager.instance.internetGas >= 50)
+            if (GameManager.Instance.internetGas >= 50)
             {
                 canPlace = true;
-                UIManager.instance.UpdateUserResource(-50f);
+                UIManager.Instance.UpdateUserResource(-50f);
             }
         }
         else if (type == BuildingType.Barracks)
         {
-            if (GameManager.instance.internetGas >= 200)
+            if (GameManager.Instance.internetGas >= 200)
             {
                 canPlace = true;
-                UIManager.instance.UpdateUserResource(-200f);
+                UIManager.Instance.UpdateUserResource(-200f);
             }
         }
         else if (type == BuildingType.Turret)
         {
-            if (GameManager.instance.internetGas >= 350)
+            if (GameManager.Instance.internetGas >= 350)
             {
                 canPlace = true;
-                UIManager.instance.UpdateUserResource(-350f);
+                UIManager.Instance.UpdateUserResource(-350f);
             }
         }
         return canPlace;

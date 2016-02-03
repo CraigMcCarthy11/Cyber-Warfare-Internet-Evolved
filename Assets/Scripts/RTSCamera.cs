@@ -120,9 +120,9 @@ public class RTSCamera : MonoBehaviour
                 if (hit.collider.gameObject.tag == "Resource")
                 {
                     //Move the character to this location
-                    for (int i = 0; i < PersonalUnitManager.instance.selectedUnits.Count; i++)
+                    for (int i = 0; i < PersonalUnitManager.Instance.selectedUnits.Count; i++)
                     {
-                        PersonalUnitManager.instance.selectedUnits[i].GetComponent<PlayerUnitAIMove>().agent.SetDestination(hit.point);
+                        PersonalUnitManager.Instance.selectedUnits[i].GetComponent<PlayerUnitAIMove>().agent.SetDestination(hit.point);
                     }
                 }
                 else if (hit.collider.gameObject.tag == "AllyBuilding")
@@ -133,9 +133,9 @@ public class RTSCamera : MonoBehaviour
                     if (type == BuildingType.InternetGasCollector)
                     {
                         //Move the character to this location
-                        for (int i = 0; i < PersonalUnitManager.instance.selectedUnits.Count; i++)
+                        for (int i = 0; i < PersonalUnitManager.Instance.selectedUnits.Count; i++)
                         {
-                            PersonalUnitManager.instance.selectedUnits[i].GetComponent<PlayerUnitAIMove>().agent.SetDestination(hit.point);
+                            PersonalUnitManager.Instance.selectedUnits[i].GetComponent<PlayerUnitAIMove>().agent.SetDestination(hit.point);
                         }
                     }
 
@@ -143,9 +143,9 @@ public class RTSCamera : MonoBehaviour
                 }
                 else
                 {
-                    for (int i = 0; i < PersonalUnitManager.instance.selectedUnits.Count; i++)
+                    for (int i = 0; i < PersonalUnitManager.Instance.selectedUnits.Count; i++)
                     {
-                        PersonalUnitManager.instance.selectedUnits[i].GetComponent<PlayerUnitAIMove>().agent.SetDestination(hit.point);
+                        PersonalUnitManager.Instance.selectedUnits[i].GetComponent<PlayerUnitAIMove>().agent.SetDestination(hit.point);
                     }
                     //Instantiate the UI where the current selection is moving too.
                     //Used for placing texture
@@ -155,7 +155,7 @@ public class RTSCamera : MonoBehaviour
                         DestroyImmediate(createdUI);
                     }
 
-                    if (PersonalUnitManager.instance.selectedUnits.Count > 0)
+                    if (PersonalUnitManager.Instance.selectedUnits.Count > 0)
                     {
                         createdUI = GameObject.Instantiate(goToCanvasObject, (hit.point + hit.normal * surfaceOffset), Quaternion.Euler(90, 0, 0)) as GameObject;
                     }
@@ -176,12 +176,12 @@ public class RTSCamera : MonoBehaviour
             if (Physics.Raycast(screenRay, out hit, 100))
             {
                 //If we hit a character
-                if (PersonalUnitManager.instance.units.Contains(hit.collider.gameObject) && hit.collider.gameObject.GetComponent<UnitData>().factionType == GameManager.instance.playerFaction)
+                if (PersonalUnitManager.Instance.units.Contains(hit.collider.gameObject) && hit.collider.gameObject.GetComponent<UnitData>().factionType == GameManager.Instance.playerFaction)
                 {
                     //If a character is selected, remove this selection
-                    if (PersonalUnitManager.instance.selectedUnits.Count != 0)
+                    if (PersonalUnitManager.Instance.selectedUnits.Count != 0)
                     {
-                        PersonalUnitManager.instance.ClearSelection();
+                        PersonalUnitManager.Instance.ClearSelection();
                     }
                     //Add him to selected
                     hit.collider.gameObject.GetComponent<PlayerUnitAIMove>().MakeSelected();
@@ -194,7 +194,7 @@ public class RTSCamera : MonoBehaviour
                 else //We hit something other than a character
                 {
                     //If we hit the ground we clear the selection
-                    PersonalUnitManager.instance.ClearSelection();
+                    PersonalUnitManager.Instance.ClearSelection();
                 }
             }
         }

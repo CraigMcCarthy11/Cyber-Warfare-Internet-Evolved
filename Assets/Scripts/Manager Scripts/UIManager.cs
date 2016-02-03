@@ -3,62 +3,24 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UIManager : MonoBehaviour {
-
-    private static UIManager thisInstance;
-
+public class UIManager : Singleton<UIManager>
+{
     private MenuMode menuMode;
     public List<RectTransform> menuPanels = new List<RectTransform>();
 
-    public Text resourceText; 
-    #region Singleton Stuff
-    /// <summary>
-    /// Constructor that handles getting and setting the instance
-    /// this is using the singleton pattern
-    /// </summary>
-    public static UIManager instance
+    public Text resourceText;
+
+    // Use this for initialization
+    void Start()
     {
-        get
-        {
-            if (thisInstance == null)
-            {
-                thisInstance = GameObject.FindObjectOfType<UIManager>();
-
-                //Tell unity not to destroy this object when loading a new scene!
-                DontDestroyOnLoad(thisInstance.gameObject);
-            }
-
-            return thisInstance;
-        }
-    }
-
-    void Awake()
-    {
-        if (thisInstance == null)
-        {
-            //If I am the first instance, make me the Singleton
-            thisInstance = this;
-            DontDestroyOnLoad(this);
-        }
-        else
-        {
-            //If a Singleton already exists and you find
-            //another reference in scene, destroy it!
-            if (this != thisInstance)
-                Destroy(this.gameObject);
-        }
-    }
-    #endregion
-
-	// Use this for initialization
-	void Start () {
         resourceText.text = "Internet Gas: ";
         SetMenuMode(MenuMode.BuildingSpawn);
     }
-	
-	// Update is called once per frame
-	void Update () {
-	    if(Input.GetMouseButtonDown(0))
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -72,7 +34,7 @@ public class UIManager : MonoBehaviour {
                 }
                 else
                 {
-                    switch(building.buildingType)
+                    switch (building.buildingType)
                     {
                         case BuildingType.HomeBase:
                             {
@@ -103,23 +65,23 @@ public class UIManager : MonoBehaviour {
                 }
             }
         }
-	}
+    }
 
     public void UpdateUserResource(float resources)
     {
-        GameManager.instance.internetGas += resources;
+        GameManager.Instance.internetGas += resources;
 
-        resourceText.text = "Internet Gas: " + GameManager.instance.internetGas;
+        resourceText.text = "Internet Gas: " + GameManager.Instance.internetGas;
     }
 
     public void SetMenuMode(MenuMode newMode)
     {
         Debug.Log(newMode);
-        for(int i = 0; i < menuPanels.Count; i++)
+        for (int i = 0; i < menuPanels.Count; i++)
         {
             menuPanels[i].gameObject.SetActive(false);
         }
-        
+
         menuPanels[(int)newMode].gameObject.SetActive(true);
         menuMode = newMode;
     }

@@ -11,7 +11,7 @@ public class UnitData : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        //factionType = GameManager.instance.playerFaction;
+        //factionType = GameManager.Instance.playerFaction;
         thisNavAgent = this.GetComponent<NavMeshAgent>();
 	}
 	

@@ -22,7 +22,7 @@ public class Worker : MonoBehaviour {
     public void GoToLastResource()
     {
         //This should be called when a worker hits the base and needs to repeat the cycle
-        UIManager.instance.UpdateUserResource(currentInventory);
+        UIManager.Instance.UpdateUserResource(currentInventory);
         currentInventory = 0;
         this.gameObject.GetComponent<UnitData>().thisNavAgent.speed = 7f;
         this.gameObject.GetComponent<NavMeshAgent>().SetDestination(lastResource.transform.position);
